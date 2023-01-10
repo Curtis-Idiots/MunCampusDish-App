@@ -1,37 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import { FlatList, SafeAreaView, SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
-import { COLORS } from './assets/constants';
-import FoodCard from './components/FoodCard';
-import HomeHeader from './components/HomeHeader'
-import { RootSiblingParent } from 'react-native-root-siblings';
-import api from './api/api'
-import { useEffect, useState } from 'react';
-
+import { StatusBar } from "expo-status-bar"
+import {
+  FlatList,
+  SafeAreaView,
+  SectionList,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native"
+import { COLORS } from "./assets/constants"
+import FoodCard from "./components/FoodCard"
+import HomeHeader from "./components/HomeHeader"
+import { RootSiblingParent } from "react-native-root-siblings"
+import api, { fetchMenu } from "./api/api"
+import { useEffect, useState } from "react"
 
 export default function App() {
   const [menu, setMenu] = useState([])
   // Probably use the code for the meal instead of "lunch"
-  const [meal, setMeal] = useState('lunch')
+  const [meal, setMeal] = useState("lunch")
 
   useEffect(() => {
-
     // it's not going to be if/else in the real API call, use the meal code in the requrest url instead
     if (meal === "breakfast") {
-      api.getBreakfast().then(data => {
+      api.fetchMenu(867).then((data) => {
         setMenu(data)
       })
-    } 
-    else if (meal === "lunch") {
-      api.getLunch().then(data => {
+    } else if (meal === "lunch") {
+      api.fetchMenu(868).then((data) => {
+        setMenu(data)
+      })
+    } else if (meal === "dinner") {
+      api.fetchMenu(869).then((data) => {
         setMenu(data)
       })
     }
-    else if (meal === "dinner") {
-      api.getDinner().then(data => {
-        setMenu(data)
-      })
-    }
-    
   }, [meal])
 
   const changeMeal = (meal) => {
@@ -40,7 +43,7 @@ export default function App() {
 
   const handleSearch = (query) => {
     const formattedQuery = query.toLowerCase()
-    const data = menu.filter(product => {
+    const data = menu.filter((product) => {
       if (product.name && product.name.includes(formattedQuery)) {
         return product
       }
@@ -71,11 +74,17 @@ export default function App() {
               data={menu}
               keyExtractor={(item, index) => item + index}
               renderItem={({ item }) => <FoodCard data={item} />}
-              ListHeaderComponent={<HomeHeader action={changeMeal} searchAction={handleSearch} currentMeal={meal} />}
+              ListHeaderComponent={
+                <HomeHeader
+                  action={changeMeal}
+                  searchAction={handleSearch}
+                  currentMeal={meal}
+                />
+              }
             />
           </View>
         </View>
       </SafeAreaView>
     </RootSiblingParent>
-  );
+  )
 }
