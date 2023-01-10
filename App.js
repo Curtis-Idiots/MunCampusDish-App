@@ -66,14 +66,27 @@ export default function App() {
 
   return (
     <RootSiblingParent>
-      <SafeAreaView style={{ paddingTop: 24 }}>
+      <SafeAreaView style={{ paddingTop: 24, paddingBottom: 24 }}>
         <View>
           <View>
             <Text />
-            <FlatList
-              data={menu}
+            <SectionList
+              sections={menu}
               keyExtractor={(item, index) => item + index}
               renderItem={({ item }) => <FoodCard data={item} />}
+              renderSectionHeader={({ section: { title } }) => (
+                <Text
+                  style={{
+                    fontSize: 24,
+                    fontWeight: "bold",
+                    color: COLORS.secondary,
+                    marginBottom: 10,
+                    margin: 10,
+                  }}
+                >
+                  {title}
+                </Text>
+              )}
               ListHeaderComponent={
                 <HomeHeader
                   action={changeMeal}
