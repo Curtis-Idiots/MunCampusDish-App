@@ -1,8 +1,25 @@
 import { View, Text, Pressable, Image } from 'react-native'
-import React from 'react'
-import heart from '../assets/heart.png'
+import React, { useState } from 'react'
+import Ionicons from '@expo/vector-icons/Ionicons';
+import Toast from 'react-native-root-toast';
+
 
 export default function FoodCard({ data }) {
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite)
+    const message = `${isFavorite ? 'Removed' : 'Added'} ${data.name} ${isFavorite ? 'from' : 'to'} favorites`
+    Toast.show(message, {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      delay: 0,
+    });
+  }
+
   return (
     <View style={{
       flexDirection: 'row',
@@ -23,22 +40,19 @@ export default function FoodCard({ data }) {
 
       elevation: 5,
     }}>
-      <Text>{data}</Text>
+      <Text>{data.name}</Text>
       <Pressable
         style={{
           width: 40,
           height: 40,
-          backgroundColor: 'white',
+          backgroundColor: '#D3D3D3',
           borderRadius: 24,
           alignItems: "center",
           justifyContent: "center",
         }}
+        onPress={() => toggleFavorite()}
       >
-        <Image
-          source={heart}
-          resizeMode="contain"
-          style={{ width: 24, height: 24 }}
-        />
+        <Ionicons name={isFavorite ? "md-heart" : "md-heart-outline"} size={32} color="red" />
       </Pressable>
     </View>
   )

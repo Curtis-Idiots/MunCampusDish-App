@@ -4,7 +4,7 @@ import React from 'react'
 import { COLORS } from '../assets/constants'
 import MealButton from './MealButton.js'
 
-export default function HomeHeader() {
+export default function HomeHeader({ action, searchAction, currentMeal }) {
   return (
     <View
       style={{
@@ -20,11 +20,11 @@ export default function HomeHeader() {
         <Text style={{ color: COLORS.accent, fontWeight: 'bold', fontSize: 24 }}>MUN Dining Hall</Text>
         <Text style={{ color: COLORS.accent, fontWeight: 'bold', fontSize: 24 }}>Daily Menu</Text>
       </View>
-      <TextInput style={{ backgroundColor: '#FFFFFF', padding: 5, borderRadius: 5, marginTop: 10 }} placeholder='Search'></TextInput>
+      <TextInput onChangeText={searchAction} style={{ backgroundColor: '#FFFFFF', padding: 5, borderRadius: 5, marginTop: 10 }} placeholder='Search'></TextInput>
       <View style={{flexDirection: 'row'}}>
-        <MealButton title="Breakfast" />
-        <MealButton title="Lunch" />
-        <MealButton title="Dinner" />
+        <MealButton title="Breakfast" action={action} code="breakfast" currentMeal={currentMeal} />
+        <MealButton title="Lunch" action={action} code="lunch" currentMeal={currentMeal} />
+        <MealButton title="Dinner" action={action} code="dinner" currentMeal={currentMeal} />
       </View>
     </View>
   )
