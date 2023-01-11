@@ -35,5 +35,5 @@ exports.fetchMenu = async (periodID) => {
     return s
   })
 
-  return menuData
+  return menuData.filter((m) => m.data.length >= 1)
 }

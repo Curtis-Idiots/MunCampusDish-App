@@ -6,7 +6,9 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ActivityIndicator,
   View,
+  Modal,
 } from "react-native"
 import { COLORS } from "./assets/constants"
 import FoodCard from "./components/FoodCard"
@@ -22,6 +24,7 @@ export default function App() {
 
   useEffect(() => {
     // it's not going to be if/else in the real API call, use the meal code in the requrest url instead
+    setMenu([])
     if (meal === "breakfast") {
       api.fetchMenu(867).then((data) => {
         setMenu(data)
@@ -64,13 +67,29 @@ export default function App() {
   />
 */
 
+  const LoadingIndicator = () => (
+    <Modal visible={menu.length < 1} transparent>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 22,
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    </Modal>
+  )
+
   return (
     <RootSiblingParent>
-      <SafeAreaView style={{ paddingTop: 24, paddingBottom: 24 }}>
+      <SafeAreaView style={{ paddingTop: 24 }}>
         <View>
           <View>
-            <Text />
+            <LoadingIndicator />
             <SectionList
+              contentContainerStyle={{ paddingBottom: 20 }}
               sections={menu}
               keyExtractor={(item, index) => item + index}
               renderItem={({ item }) => <FoodCard data={item} />}
